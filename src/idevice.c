@@ -676,14 +676,16 @@ LIBIMOBILEDEVICE_API idevice_error_t idevice_connection_enable_ssl(idevice_conne
 		debug_info("ERROR: Could not create SSL bio.");
 		return ret;
 	}
-	BIO_set_fd(ssl_bio, (int)(long)connection->data, BIO_NOCLOSE);
 
-	SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv3_method());
-	if (ssl_ctx == NULL) {
-		debug_info("ERROR: Could not create SSL context.");
-		BIO_free(ssl_bio);
-		return ret;
-	}
+    BIO_set_fd(ssl_bio, (int)(long)connection->data, BIO_NOCLOSE);
+
+   SSL_CTX *ssl_ctx = SSL_CTX_new(SSLv23_method());
+    if (ssl_ctx == NULL) {
+        debug_info("ERROR: Could not create SSL context.");
+        BIO_free(ssl_bio);
+	return ret;
+    	
+    }
 
 	BIO* membp;
 	X509* rootCert = NULL;
